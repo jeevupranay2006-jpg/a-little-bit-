@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ff9acb, #ffc1e3);
+    overflow: hidden;
+    text-align: center;
+    color: #fff;
+}
+
+/* Screens */
+.screen {
+    display: none;
+    padding-top: 80px;
+}
+.active {
+    display: block;
+}
+
+/* Buttons */
+button {
+    background: #ff4f9a;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 30px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+button:hover {
+    background: #ff2f85;
+}
+
+/* Floating Hearts */
+.heart {
+    position: absolute;
+    font-size: 24px;
+    animation: float 6s linear infinite;
+}
+@keyframes float {
+    from { transform: translateY(100vh); opacity: 1; }
+    to { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* Rocket */
+#rocket {
+    position: absolute;
+    bottom: -150px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 80px;
+    animation: launch 4s ease-in-out forwards;
+}
+@keyframes launch {
+    0% { bottom: -150px; }
+    60% { bottom: 50%; }
+    100% { bottom: 110vh; }
+}
+
+/* Heart Game */
+#gameHeart {
+    font-size: 60px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Music -->
+<audio autoplay loop>
+    <source src="https://cdn.pixabay.com/audio/2023/03/13/audio_68e4c8a9c7.mp3">
+</audio>
+
+<!-- Rocket Screen -->
+<div class="screen active" id="screen0">
+    <h1>Launching Love 🚀💗</h1>
+    <div id="rocket">🚀</div>
+</div>
+
+<!-- Screen 1 -->
+<div class="screen" id="screen1">
+    <h1>Hey My Love 💕</h1>
+    <p>Enter your beautiful name</p>
+    <input id="nameInput" placeholder="Your Name"
+        style="padding:10px;border-radius:10px;border:none;">
+    <br>
+    <button onclick="nextScreen(2)">Start 💗</button>
+</div>
+
+<!-- Screen 2 -->
+<div class="screen" id="screen2">
+    <h1>Tap the Heart ❤️</h1>
+    <p>Tap 5 times to unlock my feelings</p>
+    <div id="gameHeart">❤️</div>
+    <p id="tapCount">0 / 5</p>
+</div>
+
+<!-- Screen 3 -->
+<div class="screen" id="screen3">
+    <h1>My Feelings 💌</h1>
+    <p id="loveText"></p>
+    <button onclick="nextScreen(4)">Continue 💞</button>
+</div>
+
+<!-- Screen 4 -->
+<div class="screen" id="screen4">
+    <h1>One Last Question 💍</h1>
+    <p>Will you be mine forever? 🥺❤️</p>
+    <button onclick="yesAnswer()">YES 💖</button>
+    <button onclick="alert('Haha 😜 Try again')">NO 🙈</button>
+</div>
+
+<!-- Screen 5 -->
+<div class="screen" id="screen5">
+    <h1>She Said YES!!! 🎉💖</h1>
+    <p>I Love You Endless ♾️</p>
+</div>
+
+<script>
+/* Rocket → hearts → next screen */
+setTimeout(() => {
+    for (let i = 0; i < 30; i++) createHeart();
+}, 2500);
+
+setTimeout(() => {
+    nextScreen(1);
+}, 4000);
+
+/* Navigation */
+function nextScreen(n) {
+    document.querySelectorAll('.screen')
+        .forEach(s => s.classList.remove('active'));
+    document.getElementById("screen" + n).classList.add('active');
+}
+
+/* Heart Game */
+let taps = 0;
+document.getElementById("gameHeart").onclick = () => {
+    taps++;
+    document.getElementById("tapCount").innerText = taps + " / 5";
+    if (taps >= 5) {
+        nextScreen(3);
+        let name = document.getElementById("nameInput").value || "My Love";
+        document.getElementById("loveText").innerText =
+            name + ", you are the most beautiful thing that ever happened to me 💕";
+    }
+};
+
+/* YES celebration */
+function yesAnswer() {
+    nextScreen(5);
+    setInterval(createHeart, 300);
+}
+
+/* Hearts */
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (20 + Math.random() * 30) + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+}
+</script>
+
+</body>
+</html>
